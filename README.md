@@ -32,7 +32,7 @@ To modify the source code, use a code editor such as Visual Studio Code.
 1. Clone the repository:
 
    ```bash
-   git clone YOUR_REPOSITORY_URL
+   git clone https://github.com/m-faisal-askari/Event-Horizon
    ```
 
 2. Navigate to the project directory:
