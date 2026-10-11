@@ -1,3 +1,7 @@
+// ===========================================================================
+//                             Event Horizon
+// ===========================================================================
+
 const totalRows = 8;
 
 // DOM Elements
@@ -5,6 +9,27 @@ const gameBoard = document.querySelector(".game-grid");
 const participantNumberEl = document.querySelectorAll(".participant-numbers");
 const numberRow = document.querySelector(".number-row");
 numberRow.classList.add("grid-row");
+
+const numberSelector = document.querySelector(".number-selector");
+const allNumbers = numberSelector.getElementsByClassName("row-element");
+const submitBtn = document.getElementById("submit-move");
+const turnIndicator = document.querySelector(".turn-indicator");
+const turnProfileImg = document.getElementById("turn-img") || document.querySelector(".turn-status .profile-img");
+const computerState = document.querySelector("#computer-state");
+
+// Header, Overlays & Controls
+const resumeBtn = document.getElementById("resume-btn");
+const pauseOverlay = document.getElementById("pause-overlay");
+const pauseResumeBtn = document.getElementById("pause-resume-btn");
+const gameOverOverlay = document.getElementById("game-over-overlay");
+const gameStatusText = document.getElementById("game-status-text");
+const pausePlayerScore = document.getElementById("pause-player-score");
+const pauseComputerScore = document.getElementById("pause-computer-score");
+const rotatePrompt = document.getElementById("rotate-device-prompt");
+const dismissRotateBtn = document.getElementById("dismiss-rotate-btn");
+
+const playerScoreEl = document.getElementById("player-score");
+const computerScoreEl = document.getElementById("computer-score");
 
 // ===========================================================================
 //                      Board & UI Generation
@@ -111,6 +136,8 @@ const gameState = {
   gameWinner: null,
   playerWins: 0,
   computerWins: 0,
+  isPaused: false,
+  isGameOver: false,
 };
 
 function createNumbersObj() {
@@ -160,11 +187,154 @@ function createBoardState() {
 gameState.board = createBoardState();
 
 // ===========================================================================
+//                      Pausable Timer System
+// ===========================================================================
+
+/**
+ * Tracks in-flight delay so it can be suspended when paused
+ * and resumed with the exact remaining duration when unpaused.
+ */
+let activePausableTimer = null;
+
+function pausableDelay(seconds) {
+  return new Promise((resolve) => {
+    const durationMs = seconds * 1000;
+    let remainingMs = durationMs;
+    let startTime = Date.now();
+    let timeoutId = null;
+
+    const start = () => {
+      startTime = Date.now();
+      timeoutId = setTimeout(() => {
+        activePausableTimer = null;
+        resolve();
+      }, remainingMs);
+    };
+
+    const pause = () => {
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+        remainingMs -= Date.now() - startTime;
+        if (remainingMs < 0) remainingMs = 0;
+      }
+    };
+
+    const resume = () => {
+      if (timeoutId === null && remainingMs > 0) {
+        start();
+      } else if (remainingMs <= 0) {
+        activePausableTimer = null;
+        resolve();
+      }
+    };
+
+    activePausableTimer = { pause, resume };
+
+    if (gameState.isPaused) {
+      pause();
+    } else {
+      start();
+    }
+  });
+}
+
+// Fallback alias for non-gameplay standard delays
+const delay = (seconds) => pausableDelay(seconds);
+
+// ===========================================================================
+//                      Pause & Resume Management
+// ===========================================================================
+
+function pauseGame() {
+  if (gameState.isGameOver || gameState.isPaused) return;
+
+  gameState.isPaused = true;
+  document.body.classList.add("game-paused");
+
+  // Keep score indicators in pause overlay up to date
+  if (pausePlayerScore) pausePlayerScore.textContent = gameState.playerScore;
+  if (pauseComputerScore) pauseComputerScore.textContent = gameState.computerScore;
+
+  if (gameStatusText) gameStatusText.textContent = "Game Paused";
+
+  // Suspend any in-progress timers (e.g. computer thinking)
+  if (activePausableTimer) {
+    activePausableTimer.pause();
+  }
+
+  // Show pause overlay
+  if (pauseOverlay) {
+    pauseOverlay.classList.remove("overlay-hidden");
+  }
+}
+
+function resumeGame() {
+  if (gameState.isGameOver || !gameState.isPaused) return;
+
+  gameState.isPaused = false;
+  document.body.classList.remove("game-paused");
+
+  if (gameStatusText) gameStatusText.textContent = "Game in Progress";
+
+  // Hide pause overlay
+  if (pauseOverlay) {
+    pauseOverlay.classList.add("overlay-hidden");
+  }
+
+  // Resume suspended timers from where they left off
+  if (activePausableTimer) {
+    activePausableTimer.resume();
+  }
+}
+
+// Top-left corner Resume button toggles pause/resume during gameplay
+if (resumeBtn) {
+  resumeBtn.addEventListener("click", () => {
+    if (gameState.isPaused) {
+      resumeGame();
+    } else {
+      pauseGame();
+    }
+  });
+}
+
+// Pause Overlay "Resume Game" action button
+if (pauseResumeBtn) {
+  pauseResumeBtn.addEventListener("click", () => {
+    resumeGame();
+  });
+}
+
+// Keyboard shortcut (Escape or P) for accessible pause toggle
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" || e.key === "p" || e.key === "P") {
+    if (!gameState.isGameOver) {
+      if (gameState.isPaused) {
+        resumeGame();
+      } else {
+        pauseGame();
+      }
+    }
+  }
+});
+
+// Rotate Device Prompt dismissal button
+if (dismissRotateBtn && rotatePrompt) {
+  dismissRotateBtn.addEventListener("click", () => {
+    rotatePrompt.classList.add("dismissed");
+  });
+}
+
+// ===========================================================================
 //                      Board Position Selection
 // ===========================================================================
 
 for (const element of allElements) {
   element.addEventListener("click", () => {
+    // Block interactions while paused or game over
+    if (gameState.isPaused || gameState.isGameOver) return;
+
     // Don't allow selection during computer's turn
     if (gameState.currentTurn !== "player") return;
 
@@ -198,12 +368,13 @@ for (const element of allElements) {
 //                      Number Selection
 // ===========================================================================
 
-const numberSelector = document.querySelector(".number-selector");
-const allNumbers = numberSelector.querySelectorAll(".row-element");
-const submitBtn = numberSelector.querySelector("button");
+const numberSelectorElements = numberSelector.querySelectorAll(".number-row .row-element");
 
-for (const number of allNumbers) {
+for (const number of numberSelectorElements) {
   number.addEventListener("click", () => {
+    // Block interactions while paused or game over
+    if (gameState.isPaused || gameState.isGameOver) return;
+
     // Don't allow selection during computer's turn
     if (gameState.currentTurn !== "player") return;
 
@@ -229,7 +400,7 @@ for (const number of allNumbers) {
     // Select the new number
     number.classList.remove("selected-enabled");
     number.classList.add("selected");
-    gameState.selectedNumber = parseInt(number.textContent);
+    gameState.selectedNumber = parseInt(number.textContent, 10);
   });
 }
 
@@ -238,6 +409,7 @@ for (const number of allNumbers) {
 // ===========================================================================
 
 function canMakeMove(owner, position, value) {
+  if (gameState.isPaused || gameState.isGameOver) return false;
   if (position === null) return false;
   if (value === null) return false;
   if (gameState.board[position].value !== null) return false;
@@ -248,52 +420,13 @@ function canMakeMove(owner, position, value) {
 }
 
 function makeMove() {
-  const selectedValue = gameState.selectedNumber;
-  const selectedPos = gameState.selectedPosition;
-
-  // Update game state
-  gameState.board[selectedPos].value = selectedValue;
-  gameState.board[selectedPos].owner = "player";
-  gameState.playerNumbers[selectedValue] -= 1;
-  gameState.playerMoves += 1;
-  gameState.totalMoves += 1;
-
-  // Update board UI
-  const boardEl = document.getElementById(selectedPos);
-  const elValue = boardEl.querySelector(".element-number");
-  elValue.textContent = selectedValue;
-  boardEl.classList.add("selected-disabled");
-  boardEl.classList.remove("empty-selected");
-
-  // Update player moves display
-  document.getElementById("player-moves").textContent = gameState.playerMoves;
-
-  // Update player number inventory display
-  const playerNumbersEl = document.querySelectorAll(".participant-numbers")[0];
-  const quotaElements = playerNumbersEl.querySelectorAll(".number-quota");
-  quotaElements[selectedValue - 1].textContent =
-    gameState.playerNumbers[selectedValue];
-
-  // Clear number selector visual state
-  const selectedNumberEl = numberSelector.querySelector(".selected");
-  if (selectedNumberEl) {
-    selectedNumberEl.classList.remove("selected");
-    selectedNumberEl.classList.add("selected-enabled");
-  }
-
-  // Reset selection state
-  gameState.selectedPosition = null;
-  gameState.selectedNumber = null;
-
-  // Update number selector (disable depleted numbers)
-  updateNumberSelector();
-
-  return true;
+  // Maintained for backward compatibility
+  return makeAnyMove("player", gameState.selectedPosition, gameState.selectedNumber);
 }
 
 function updateNumberSelector() {
-  for (const number of allNumbers) {
-    const value = parseInt(number.textContent);
+  for (const number of numberSelectorElements) {
+    const value = parseInt(number.textContent, 10);
     const remaining = gameState.playerNumbers[value];
 
     number.classList.remove(
@@ -314,42 +447,28 @@ function updateNumberSelector() {
 //                      Turn System
 // ===========================================================================
 
-const turnIndicator = document.querySelector(".turn-indicator");
+function updateTurnIndicator() {
+  const isPlayer = gameState.currentTurn === "player";
+  turnIndicator.textContent = isPlayer ? "Your turn" : "Computer's turn";
 
-function turnTransition() {
-  if (gameState.currentTurn === "player") {
-    gameState.currentTurn = "computer";
-    turnIndicator.textContent = "Computer's turn";
-  } else {
-    gameState.currentTurn = "player";
-    turnIndicator.textContent = "Your turn";
+  if (turnProfileImg) {
+    turnProfileImg.style.backgroundColor = isPlayer ? "#6D28D9" : "#B45309";
+    turnProfileImg.classList.toggle("player-turn", isPlayer);
+    turnProfileImg.classList.toggle("computer-turn", !isPlayer);
   }
 }
 
-// ===========================================================================
-//                      Submit Button
-// ===========================================================================
-
-// submitBtn.addEventListener("click", async () => {
-//   const targetPos = gameState.selectedPosition;
-//   const targetVal = gameState.selectedNumber;
-
-//   if (canMakeMove("player", targetPos, targetVal)) {
-//     const moveMade = makeAnyMove("player", targetPos, targetVal);
-
-//     if (moveMade) {
-//       turnTransition();
-
-//       await handleComputerMove();
-//     }
-//   }
-// });
+function turnTransition() {
+  gameState.currentTurn = gameState.currentTurn === "player" ? "computer" : "player";
+  updateTurnIndicator();
+}
 
 // ===========================================================================
 //                      Initialize Display
 // ===========================================================================
 
 updateNumberSelector();
+updateTurnIndicator();
 document.getElementById("player-score").textContent = gameState.playerScore;
 document.getElementById("computer-score").textContent = gameState.computerScore;
 document.getElementById("player-moves").textContent = gameState.playerMoves;
@@ -358,13 +477,12 @@ document.getElementById("computer-moves").textContent = gameState.computerMoves;
 // ===========================================================================
 //                      Computer Move
 // ===========================================================================
+
 function getLegalMoves() {
   const legalMoves = [];
   const allMoves = gameState.board;
-  // console.log(allMoves)
 
   for (const move in allMoves) {
-    // console.log(move)
     if (
       gameState.board[move].value === null &&
       gameState.board[move].owner === null
@@ -376,12 +494,12 @@ function getLegalMoves() {
 }
 
 function getAvailableNumbers() {
-  const allNumbers = gameState.computerNumbers;
+  const allNumbersObj = gameState.computerNumbers;
   const availableNumbers = {};
 
-  for (const number in allNumbers) {
-    if (allNumbers[number] !== 0) {
-      availableNumbers[number] = allNumbers[number];
+  for (const number in allNumbersObj) {
+    if (allNumbersObj[number] !== 0) {
+      availableNumbers[number] = allNumbersObj[number];
     }
   }
 
@@ -392,14 +510,13 @@ function makeComputerMove() {
   const legalMoves = getLegalMoves();
   const computerNumbers = getAvailableNumbers();
   const keys = Object.keys(computerNumbers);
+  if (keys.length === 0 || legalMoves.length === 0) return false;
+
   const randomKeyIdx = Math.floor(Math.random() * keys.length);
-
   const randomIdx = Math.floor(Math.random() * legalMoves.length);
-  const randomKey = keys[randomKeyIdx];
-
+  const randomKey = parseInt(keys[randomKeyIdx], 10);
   const randomMove = legalMoves[randomIdx];
 
-  // console.log(randomKey);
   if (canMakeMove("computer", randomMove, randomKey)) {
     makeAnyMove("computer", randomMove, randomKey);
   }
@@ -446,7 +563,7 @@ function makeAnyMove(owner, position, value) {
 
   boardEl.classList.remove("empty-selected");
   boardEl.classList.add("selected-disabled");
-  boardEl.classList.add(`${owner}-placed`); // Useful for styling player vs computer cells
+  boardEl.classList.add(`${owner}-placed`);
 
   // 3. Clear player-specific UI controls if it was a player move
   if (owner === "player") {
@@ -474,13 +591,11 @@ function makeAnyMove(owner, position, value) {
   return true;
 }
 
-const delay = (seconds) =>
-  new Promise((resolve) => setTimeout(resolve, seconds * 1000));
-
 async function handleComputerMove() {
   computerState.innerHTML = `Thinking... <small>Analyzing the board</small>`;
 
-  await delay(2);
+  // Suspends safely if the game is paused during computer turn
+  await pausableDelay(2);
 
   const moveMade = makeComputerMove();
 
@@ -490,74 +605,40 @@ async function handleComputerMove() {
     return true;
   } else {
     computerState.textContent = "Great Game!";
-    return;
+    return false;
   }
 }
 
-const computerState = document.querySelector("#computer-state");
+// ===========================================================================
+//                      Black Hole & End Game Logic
+// ===========================================================================
 
 function checkBlackhole() {
   const legalMoves = getLegalMoves();
 
   if (legalMoves.length === 1) {
     const lastPos = legalMoves[0];
-
     const blackHole = assignBlackhole(lastPos);
-
-    // console.log(gameState.board[lastPos].specialState);
-    // console.log(lastPos);
 
     return {
       position: lastPos,
       state: blackHole,
     };
-  } else return false;
+  }
+  return false;
 }
 
 function assignBlackhole(position) {
   const blackHoleTarget = gameState.board[position];
-
   blackHoleTarget.specialState = "blackhole";
-  // console.log(blackHoleTarget);
   return blackHoleTarget;
 }
 
 function updateBlackholeUi(blackhole) {
   const blackholeId = blackhole.position;
   const blackholeEl = document.getElementById(blackholeId);
-
   blackholeEl.classList.add("blackhole");
 }
-
-async function simulateGame() {
-  while (getLegalMoves().length > 1) {
-    if (gameState.currentTurn === "player") {
-      const legalMoves = getLegalMoves();
-      const availableNumbers = getAvailableNumbers();
-
-      const randomPosition =
-        legalMoves[Math.floor(Math.random() * legalMoves.length)];
-
-      const keys = Object.keys(gameState.playerNumbers).filter(
-        (key) => gameState.playerNumbers[key] > 0,
-      );
-
-      const randomNumber = keys[Math.floor(Math.random() * keys.length)];
-
-      makeAnyMove("player", randomPosition, randomNumber);
-      // await delay(0.2)
-    } else {
-      makeComputerMove();
-      // await delay(0.2)
-    }
-
-    turnTransition();
-  }
-
-  handleBlackhole();
-}
-
-// simulateGame();
 
 function getNearestElements(blackholePos) {
   const [rowPart, colPart] = blackholePos.split("-");
@@ -566,17 +647,14 @@ function getNearestElements(blackholePos) {
   const colNum = parseInt(colPart.replace("c", ""), 10);
 
   const rawNeighboringPositions = calculateNeighboringPositions(rowNum, colNum);
-  const gamePositions = Object.keys(gameState.board);
   const finalNeighboringPositions = [];
 
   for (const position of rawNeighboringPositions) {
-    // if (gamePositions.includes(position)) {
     if (gameState.board[position]) {
       finalNeighboringPositions.push(position);
     }
   }
 
-  // console.log(finalNeighboringPositions)
   return finalNeighboringPositions;
 }
 
@@ -591,8 +669,8 @@ function handleBlackhole(blackHole) {
   let playerScore = 0;
 
   updateBlackholeUi(blackHole);
-  // console.log(blackHole);
   const nearestPositions = getNearestElements(blackHole.position);
+
   for (const position of nearestPositions) {
     const positionEl = document.getElementById(position);
     const positionRect = positionEl.getBoundingClientRect();
@@ -601,9 +679,6 @@ function handleBlackhole(blackHole) {
     const pullX = blackholeCenterX - positionCenterX;
     const pullY = blackholeCenterY - positionCenterY;
 
-    // console.log(positionCenterX, positionCenterY);
-    // console.log(position, pullX, pullY);
-    // console.log(positionRect)
     // 1. Inject the pull distances as CSS variables on the specific element
     positionEl.style.setProperty("--pull-x", `${pullX}px`);
     positionEl.style.setProperty("--pull-y", `${pullY}px`);
@@ -614,23 +689,16 @@ function handleBlackhole(blackHole) {
     const positionElState = gameState.board[position];
 
     if (positionElState.owner === "computer") {
-      computerScore += parseInt(positionElState.value);
+      computerScore += parseInt(positionElState.value, 10);
     } else if (positionElState.owner === "player") {
-      playerScore += parseInt(positionElState.value);
+      playerScore += parseInt(positionElState.value, 10);
     }
-
-    // console.log(gameState.board[position]);
   }
-
-  // console.log(computerScore);
-  // console.log(playerScore);
 
   gameState.playerScore = playerScore;
   gameState.computerScore = computerScore;
 
   showEndGameModal();
-
-  // console.log(blackholeCenterX, blackholeCenterY);
 }
 
 function calculateNeighboringPositions(row, col) {
@@ -661,7 +729,19 @@ function calculateNeighboringPositions(row, col) {
 }
 
 async function showEndGameModal() {
-  await delay(1.3);
+  gameState.isGameOver = true;
+
+  // Ensure pause overlay is dismissed when game ends
+  if (pauseOverlay) {
+    pauseOverlay.classList.add("overlay-hidden");
+  }
+
+  if (gameStatusText) {
+    gameStatusText.textContent = "Game Over";
+  }
+
+  await pausableDelay(1.3);
+
   const overlay = document.getElementById("game-over-overlay");
   const winnerTitle = document.getElementById("winner-announcement");
   const finalPlayer = document.getElementById("final-player-score");
@@ -683,23 +763,22 @@ async function showEndGameModal() {
   } else {
     winnerTitle.textContent = "🤝 It's a Tie!";
     winnerTitle.style.color = "#ffeb3b"; // Yellow accent
-    localStorage.setItem("lastWinner", null);
+    localStorage.setItem("lastWinner", "tie");
   }
 
   // 3. Unhide the overlay block visually
   overlay.classList.remove("overlay-hidden");
 }
 
+// ===========================================================================
+//                      Persistent Win Tracking
+// ===========================================================================
+
 const winner = localStorage.getItem("lastWinner");
-
 gameState.gameWinner = winner;
-console.log(gameState.gameWinner);
 
-const playerScoreEl = document.getElementById("player-score");
-const coomputerScoreEl = document.getElementById("computer-score");
-
-let playerWins = parseInt(localStorage.getItem("playerWins")) || 0;
-let computerWins = parseInt(localStorage.getItem("computerWins")) || 0;
+let playerWins = parseInt(localStorage.getItem("playerWins"), 10) || 0;
+let computerWins = parseInt(localStorage.getItem("computerWins"), 10) || 0;
 
 if (winner === "player") {
   playerWins += 1;
@@ -709,119 +788,56 @@ if (winner === "player") {
   localStorage.setItem("computerWins", computerWins);
 }
 
-console.log(localStorage.getItem("computerWins"));
-console.log(localStorage.getItem("playerWins"));
+playerScoreEl.textContent = localStorage.getItem("playerWins") || 0;
+computerScoreEl.textContent = localStorage.getItem("computerWins") || 0;
 
-playerScoreEl.textContent = localStorage.getItem("playerWins");
-coomputerScoreEl.textContent = localStorage.getItem("computerWins");
+// ===========================================================================
+//                      Game Initialization & Reset
+// ===========================================================================
 
 function initGame() {
-  // const winner = localStorage.getItem("lastWinner");
+  // Always register submit button handler
+  submitBtn.addEventListener("click", async () => {
+    if (gameState.isPaused || gameState.isGameOver) return;
 
-  if (winner === "player" || winner === null) {
-    submitBtn.addEventListener("click", async () => {
-      const targetPos = gameState.selectedPosition;
-      const targetVal = gameState.selectedNumber;
+    const targetPos = gameState.selectedPosition;
+    const targetVal = gameState.selectedNumber;
 
-      if (canMakeMove("player", targetPos, targetVal)) {
-        const moveMade = makeAnyMove("player", targetPos, targetVal);
+    if (canMakeMove("player", targetPos, targetVal)) {
+      const moveMade = makeAnyMove("player", targetPos, targetVal);
 
-        if (moveMade) {
-          turnTransition();
-
-          await handleComputerMove();
-        }
+      if (moveMade) {
+        turnTransition();
+        await handleComputerMove();
       }
-    });
-  } else {
+    }
+  });
+
+  // If computer was previous winner, computer starts first
+  if (winner === "computer") {
     gameState.currentTurn = "computer";
+    updateTurnIndicator();
     handleComputerMove();
+  } else {
+    updateTurnIndicator();
   }
 }
 
 function getWinner() {
-  let winner = null;
   if (gameState.playerScore > gameState.computerScore) {
-    winner = "player";
+    return "player";
   } else if (gameState.computerScore > gameState.playerScore) {
-    winner = "computer";
-  } else {
-    winner = null;
+    return "computer";
   }
-  return winner;
+  return null;
 }
-
-initGame();
-// simulateGame()
 
 function resetGame() {
   localStorage.setItem("playerWins", 0);
   localStorage.setItem("computerWins", 0);
-  localStorage.setItem("lastWinner", null);
+  localStorage.setItem("lastWinner", "");
 }
+window.resetGame = resetGame;
 
-function getPossibleComputerMoves() {
-  const legalPositions = getLegalMoves();
-  const availableNumbers = getAvailableNumbers();
-
-  const possibleMoves = [];
-
-  for (const position of legalPositions) {
-    for (const number in availableNumbers) {
-      possibleMoves.push({
-        position: position,
-        value: Number(number),
-      });
-    }
-  }
-
-  return possibleMoves;
-}
-
-function evaluateMove(move) {
-  return move.value;
-}
-const possibleMoves = getPossibleComputerMoves();
-
-for (const move of possibleMoves) {
-  // console.log(move, evaluateMove(move));
-}
-
-function chooseBestMove(moves) {
-  let bestMove = moves[0];
-
-  for (const move of moves) {
-    if (evaluateMove(move) > evaluateMove(bestMove)) {
-      bestMove = move;
-    }
-  }
-
-  return bestMove;
-}
-
-const bestMove = chooseBestMove(possibleMoves);
-
-console.log(bestMove);
-
-function simulateMove(move) {
-  const simulatedBoard = structuredClone(gameState.board);
-
-  simulatedBoard[move.position].value = move.value;
-  simulatedBoard[move.position].owner = "computer";
-
-  return simulatedBoard;
-}
-
-function evaluateMove(move) {
-  const simulatedBoard = simulateMove(move);
-
-  let score = move.value;
-
-  for (const position in simulatedBoard) {
-    if (simulatedBoard[position].owner === "computer") {
-      score += simulatedBoard[position].value;
-    }
-  }
-
-  return score;
-}
+// Start game
+initGame();

@@ -2,15 +2,30 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
     <title>Event Horizon</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=pause"
+    />
     <script src="script.js" defer></script>
   </head>
   <body>
     <nav>
       <div class="game-status">
-        <p>Game in Progress</p>
+        <button
+          id="resume-btn"
+          type="button"
+          class="resume-btn"
+          aria-label="Resume game"
+        >
+          <span class="material-symbols-outlined"> pause </span>
+        </button>
+        <p id="game-status-text">Game in Progress</p>
       </div>
 
       <div class="nav-logo">
@@ -18,7 +33,7 @@
       </div>
 
       <div class="turn-status">
-        <div class="profile-img"></div>
+        <div class="profile-img player-turn" id="turn-img"></div>
         <div class="turn-indicator">Your Turn</div>
       </div>
     </nav>
@@ -67,7 +82,7 @@
         <div class="participant-info-card">
           <div class="participant-info">
             <div class="participant">
-              <div class="profile-img" id="computer-img"></div>
+              <div class="profile-img computer-turn" id="computer-img"></div>
               <p class="participant-name">Orbit <small>Computer</small></p>
             </div>
             <!-- Ends participant -->
@@ -117,6 +132,57 @@
       </div>
     </main>
 
+    <!-- Pause Overlay -->
+    <div
+      id="pause-overlay"
+      class="overlay-hidden"
+      aria-modal="true"
+      role="dialog"
+      aria-labelledby="pause-heading"
+    >
+      <div class="modal-content">
+        <h1 id="pause-heading">Game Paused</h1>
+        <div class="score-display">
+          <p>Player Score: <span id="pause-player-score">0</span></p>
+          <p>Computer Score: <span id="pause-computer-score">0</span></p>
+        </div>
+        <button id="pause-resume-btn" type="button">Resume Game</button>
+        <button
+          class="reset-btn"
+          id="reset-btn"
+          onclick="
+            resetGame();
+            window.location.reload();
+          "
+        >
+          Reset Score
+        </button>
+      </div>
+    </div>
+
+    <!-- Rotate Device Prompt (Mobile Portrait) -->
+    <div
+      id="rotate-device-prompt"
+      class="rotate-prompt overlay-hidden"
+      aria-live="polite"
+    >
+      <div class="modal-content rotate-content">
+        <div class="rotate-icon" aria-hidden="true">↻</div>
+        <h2>Rotate Your Device</h2>
+        <p>
+          Please rotate to landscape mode for the intended horizontal game
+          experience.
+        </p>
+        <button
+          id="dismiss-rotate-btn"
+          type="button"
+          class="dismiss-rotate-btn"
+        >
+          Play in Portrait Anyway
+        </button>
+      </div>
+    </div>
+
     <!-- End Game Overlay -->
     <div id="game-over-overlay" class="overlay-hidden">
       <div class="modal-content">
@@ -128,12 +194,17 @@
         <button id="restart-btn" onclick="window.location.reload()">
           Play Again
         </button>
-        <button id="reset-btn" onclick="window.location.reload(); resetGame()">
+        <button
+        class="reset-btn"
+          id="reset-btn"
+          onclick="
+            resetGame();
+            window.location.reload();
+          "
+        >
           Reset Score
         </button>
-        
       </div>
-      
     </div>
   </body>
 </html>
