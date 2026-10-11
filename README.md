@@ -1,5 +1,10 @@
 # Event Horizon
 
+An interactive browser-based puzzle game built with HTML, CSS, and JavaScript.
+
+**[Play Live Demo](https://event-horizon-theta-nine.vercel.app/)** · [**View Source Code**](https://github.com/m-faisal-askari/Event-Horizon)
+
+
 **An interactive browser-based puzzle game built with HTML, CSS, and JavaScript.**
 
 Event Horizon is a web-based game focused on interactive gameplay, clear visual presentation, and responsive user controls. Built with vanilla JavaScript, the project explores game logic, DOM manipulation, event handling, and frontend development without relying on a JavaScript framework.
