@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Horizon</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <nav>
+      <div class="game-status">
+        <p>Game in Progress</p>
+      </div>
+
+      <div class="nav-logo">
+        <img src="assets/event-horizon-logo.png" alt="Event Horizon" />
+      </div>
+
+      <div class="turn-status">
+        <div class="profile-img"></div>
+        <div class="turn-indicator">Your Turn</div>
+      </div>
+    </nav>
+
+    <main>
+      <div class="game-container">
+        <div class="participant-info-card">
+          <div class="participant-info">
+            <div class="participant">
+              <div class="profile-img" id="player-img"></div>
+              <p class="participant-name">You</p>
+            </div>
+            <!-- Ends participant -->
+            <div class="participant-status">
+              <p>Active</p>
+            </div>
+            <!-- Ends participant-status -->
+          </div>
+
+          <div class="participant-data">
+            <div class="participant-score">
+              <p>Score</p>
+              <h3 id="player-score">12</h3>
+            </div>
+            <div class="participant-moves">
+              <p>Moves</p>
+              <h3 id="player-moves">8</h3>
+            </div>
+          </div>
+
+          <!-- Ends participant-data -->
+
+          <div class="participant-numbers">
+            <h2>Your Numbers</h2>
+            <!-- Numbers will be added from script.js -->
+          </div>
+        </div>
+        <!-- Ends participant-info-card -->
+
+        <div class="game-board">
+          <div class="game-grid">
+            <!-- Actual grid will be added by script.js -->
+          </div>
+        </div>
+
+        <div class="participant-info-card">
+          <div class="participant-info">
+            <div class="participant">
+              <div class="profile-img" id="computer-img"></div>
+              <p class="participant-name">Orbit <small>Computer</small></p>
+            </div>
+            <!-- Ends participant -->
+            <div class="participant-status">
+              <p>Active</p>
+            </div>
+            <!-- Ends participant-status -->
+          </div>
+
+          <div class="participant-data">
+            <div class="participant-score">
+              <p>Score</p>
+              <h3 id="computer-score">12</h3>
+            </div>
+            <div class="participant-moves">
+              <p>Moves</p>
+              <h3 id="computer-moves">8</h3>
+            </div>
+          </div>
+
+          <!-- Ends participant-data -->
+
+          <div class="participant-numbers">
+            <h2>Opponent's Numbers</h2>
+            <!-- Numbers will be added from script.js -->
+          </div>
+
+          <div class="participant-state">
+            <div class="profile-img"></div>
+            <h4 id="computer-state">Waiting... <small></small></h4>
+          </div>
+          <!-- Ends participant-state -->
+        </div>
+      </div>
+      <div class="number-selector">
+        <div class="instructions">
+          <small
+            >Select a position on the board, choose a number, then place
+            it.</small
+          >
+        </div>
+        <div class="number-row">
+          <!-- numbers will be added by scrpt,js -->
+        </div>
+
+        <button type="submit" id="submit-move">Place Number</button>
+      </div>
+    </main>
+
+    <!-- End Game Overlay -->
+    <div id="game-over-overlay" class="overlay-hidden">
+      <div class="modal-content">
+        <h1 id="winner-announcement">Player Wins!</h1>
+        <div class="score-display">
+          <p>Player Score: <span id="final-player-score">0</span></p>
+          <p>Computer Score: <span id="final-computer-score">0</span></p>
+        </div>
+        <button id="restart-btn" onclick="window.location.reload()">
+          Play Again
+        </button>
+        <button id="reset-btn" onclick="window.location.reload(); resetGame()">
+          Reset Score
+        </button>
+        
+      </div>
+      
+    </div>
+  </body>
+</html>

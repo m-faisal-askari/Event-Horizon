@@ -1,0 +1,1261 @@
+:root {
+  /* =========================================================
+     CORE BACKGROUNDS
+     ========================================================= */
+
+  --color-bg: #05080e;
+  --color-bg-deep: #03060b;
+  --color-bg-soft: #080d16;
+
+  --color-bg-gradient: radial-gradient(
+    circle at 50% 35%,
+    #0b1220 0%,
+    #070c15 42%,
+    #04070d 100%
+  );
+
+  --color-bg-vignette: radial-gradient(
+    ellipse at center,
+    transparent 20%,
+    rgba(0, 0, 0, 0.28) 75%,
+    rgba(0, 0, 0, 0.62) 100%
+  );
+
+  /* =========================================================
+     PANELS / CARDS
+     ========================================================= */
+
+  --color-surface: #080d16;
+  --color-surface-raised: #0b111c;
+  --color-surface-elevated: #0d1421;
+  --color-surface-hover: #101a2b;
+  --color-surface-active: #131d31;
+
+  --color-surface-gradient: linear-gradient(
+    145deg,
+    #0d1421 0%,
+    #080e18 52%,
+    #060a12 100%
+  );
+
+  --color-card-gradient: linear-gradient(
+    160deg,
+    rgba(16, 24, 39, 0.92) 0%,
+    rgba(7, 12, 21, 0.96) 100%
+  );
+
+  /* =========================================================
+     BORDERS / DIVIDERS
+     ========================================================= */
+
+  --color-border: #26354c;
+  --color-border-soft: rgba(91, 116, 151, 0.32);
+  --color-border-subtle: rgba(93, 115, 145, 0.18);
+  --color-border-strong: #405579;
+  --color-divider: rgba(109, 130, 161, 0.26);
+  --color-grid-line: rgba(80, 111, 153, 0.24);
+
+  /* =========================================================
+     PRIMARY ACCENT — VIOLET / INDIGO
+     ========================================================= */
+
+  --color-primary: #7668ff;
+  --color-primary-light: #9a91ff;
+  --color-primary-bright: #b7b1ff;
+  --color-primary-dark: #5145c7;
+  --color-primary-deep: #312b87;
+  --color-primary-muted: #57508f;
+  --color-primary-alpha: rgba(118, 104, 255, 0.18);
+
+  --color-primary-gradient: linear-gradient(
+    135deg,
+    #9a8cff 0%,
+    #7668ff 48%,
+    #5548d4 100%
+  );
+
+  --color-primary-gradient-soft: linear-gradient(
+    135deg,
+    rgba(154, 140, 255, 0.28),
+    rgba(118, 104, 255, 0.12)
+  );
+
+  /* =========================================================
+     BLUE ACCENT — PLAYER / NUMBER SYSTEM
+     ========================================================= */
+
+  --color-blue: #547edc;
+  --color-blue-light: #7099f2;
+  --color-blue-bright: #89adff;
+  --color-blue-dark: #294d9d;
+  --color-blue-deep: #172c5c;
+  --color-blue-alpha: rgba(84, 126, 220, 0.18);
+
+  --color-blue-gradient: linear-gradient(
+    145deg,
+    #7099f2 0%,
+    #496fc9 48%,
+    #29478d 100%
+  );
+
+  /* =========================================================
+     OPPONENT / ORBIT PURPLE
+     ========================================================= */
+
+  --color-orbit: #8c7891;
+  --color-orbit-light: #aa96ad;
+  --color-orbit-bright: #c1aec3;
+  --color-orbit-dark: #5e4d63;
+  --color-orbit-deep: #332b3b;
+  --color-orbit-alpha: rgba(160, 133, 163, 0.18);
+
+  --color-orbit-gradient: linear-gradient(
+    145deg,
+    #a994ad 0%,
+    #79647e 50%,
+    #514252 100%
+  );
+
+  /* =========================================================
+     TYPOGRAPHY
+     ========================================================= */
+
+  --color-text: #f1f4ff;
+  --color-text-primary: #eef2ff;
+  --color-text-secondary: #c3cbe0;
+  --color-text-muted: #8995ad;
+  --color-text-subtle: #657188;
+  --color-text-disabled: #465268;
+  --color-text-accent: #aaa3ff;
+
+  /* =========================================================
+     STATUS COLORS
+     ========================================================= */
+
+  --color-active: #8175ff;
+  --color-active-soft: rgba(129, 117, 255, 0.16);
+  --color-success: #9f9cff;
+  --color-warning: #c3a5df;
+  --color-danger: #d4779b;
+  --color-info: #79a4ff;
+
+  /* =========================================================
+     PLAYER NUMBER TOKENS
+     ========================================================= */
+
+  --number-player-bg: linear-gradient(
+    145deg,
+    #6d95ed 0%,
+    #456bc4 55%,
+    #29458a 100%
+  );
+  --number-player-border: #7298ed;
+  --number-player-text: #ffffff;
+  --number-player-shadow:
+    0 0 0 1px rgba(124, 155, 239, 0.14), 0 5px 14px rgba(20, 48, 110, 0.35);
+
+  --number-opponent-bg: linear-gradient(
+    145deg,
+    #a28ba7 0%,
+    #79637f 55%,
+    #514253 100%
+  );
+  --number-opponent-border: #a995ad;
+  --number-opponent-text: #ffffff;
+  --number-opponent-shadow:
+    0 0 0 1px rgba(177, 147, 180, 0.12), 0 5px 14px rgba(45, 29, 49, 0.35);
+
+  /* =========================================================
+     EMPTY BOARD POSITIONS
+     ========================================================= */
+
+  --color-empty: rgba(8, 14, 24, 0.9);
+  --color-empty-border: rgba(85, 113, 143, 0.5);
+  --color-empty-hover: rgba(69, 91, 121, 0.28);
+  --color-empty-selected: rgba(118, 104, 255, 0.16);
+
+  /* =========================================================
+     ACTIVE / SELECTED POSITION
+     ========================================================= */
+
+  --color-selected: #897cff;
+  --color-selected-border: #a99fff;
+  --color-selected-glow:
+    0 0 8px rgba(118, 104, 255, 0.85), 0 0 22px rgba(118, 104, 255, 0.48),
+    0 0 42px rgba(118, 104, 255, 0.2);
+  --color-focus-ring: rgba(132, 119, 255, 0.8);
+
+  /* =========================================================
+     BUTTONS
+     ========================================================= */
+
+  --button-primary-bg: linear-gradient(
+    135deg,
+    #9586ff 0%,
+    #7565e9 52%,
+    #6251d0 100%
+  );
+  --button-primary-bg-hover: linear-gradient(
+    135deg,
+    #a397ff 0%,
+    #8171f5 52%,
+    #6c5be0 100%
+  );
+  --button-primary-text: #ffffff;
+  --button-primary-border: rgba(192, 185, 255, 0.5);
+  --button-primary-shadow:
+    0 5px 18px rgba(90, 72, 215, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+
+  --button-secondary-bg: rgba(14, 21, 34, 0.88);
+  --button-secondary-border: #394c68;
+  --button-secondary-text: #d9e0f0;
+
+  /* =========================================================
+     TOP NAV / HEADER
+     ========================================================= */
+
+  --header-line: linear-gradient(
+    90deg,
+    transparent,
+    rgba(103, 127, 166, 0.55),
+    transparent
+  );
+  --header-accent-line: linear-gradient(
+    90deg,
+    transparent,
+    rgba(118, 104, 255, 0.75),
+    transparent
+  );
+  --header-text: #f2f4ff;
+  --header-subtitle: #c4cde0;
+
+  /* =========================================================
+     GAME BOARD
+     ========================================================= */
+
+  --board-outline: rgba(81, 108, 145, 0.38);
+  --board-outline-strong: rgba(102, 131, 171, 0.56);
+  --board-glow: rgba(74, 91, 150, 0.12);
+  --board-background: radial-gradient(
+    ellipse at 50% 55%,
+    rgba(29, 45, 75, 0.13) 0%,
+    transparent 65%
+  );
+
+  /* =========================================================
+     ORBIT / BLACK HOLE
+     ========================================================= */
+
+  --black-hole-core: #010205;
+  --black-hole-ring: #8c82ff;
+  --black-hole-ring-bright: #b5afff;
+  --black-hole-glow:
+    0 0 8px rgba(139, 129, 255, 0.9), 0 0 24px rgba(118, 104, 255, 0.6),
+    0 0 50px rgba(118, 104, 255, 0.28);
+  --black-hole-gradient: radial-gradient(
+    circle,
+    #010205 0%,
+    #010205 48%,
+    rgba(40, 31, 86, 0.55) 58%,
+    rgba(118, 104, 255, 0.18) 70%,
+    transparent 76%
+  );
+
+  /* =========================================================
+     GLOW SYSTEM
+     ========================================================= */
+
+  --glow-primary:
+    0 0 7px rgba(118, 104, 255, 0.85), 0 0 18px rgba(118, 104, 255, 0.42);
+  --glow-primary-strong:
+    0 0 6px rgba(161, 151, 255, 1), 0 0 18px rgba(118, 104, 255, 0.75),
+    0 0 38px rgba(118, 104, 255, 0.35);
+  --glow-blue: 0 0 10px rgba(93, 139, 235, 0.45);
+  --glow-white: 0 0 8px rgba(225, 230, 255, 0.6);
+
+  /* =========================================================
+     OVERLAYS / GLASS
+     ========================================================= */
+
+  --overlay-dark: rgba(2, 5, 10, 0.72);
+  --overlay-light: rgba(255, 255, 255, 0.025);
+  --glass-bg: rgba(8, 14, 24, 0.72);
+  --glass-border: rgba(117, 141, 178, 0.24);
+  --glass-highlight: rgba(255, 255, 255, 0.045);
+
+  /* =========================================================
+     BADGES / LABELS
+     ========================================================= */
+
+  --badge-bg: rgba(53, 72, 111, 0.46);
+  --badge-border: rgba(91, 117, 159, 0.28);
+  --badge-active-bg: rgba(76, 83, 145, 0.46);
+  --badge-active-text: #bcb7ff;
+
+  /* =========================================================
+     SHADOWS
+     ========================================================= */
+
+  --shadow-panel: 0 18px 45px rgba(0, 0, 0, 0.35);
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.28);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  --shadow-deep: 0 25px 60px rgba(0, 0, 0, 0.48);
+
+  /* =========================================================
+     RADIUS
+     ========================================================= */
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 9px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 999px;
+  --radius-circle: 50%;
+
+  /* =========================================================
+     TRANSITIONS / EASING
+     ========================================================= */
+
+  --transition-fast: 120ms ease;
+  --transition-normal: 180ms ease;
+  --transition-slow: 300ms ease;
+  --transition-glow: 220ms ease-in-out;
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* =========================================================
+   ANIMATIONS
+   All keyframes used across the UI live here. Motion is either
+   (a) a single staggered entrance when the board loads, or
+   (b) a direct response to a user action (hover, select, press).
+   Nothing loops forever except the two "alive" board accents
+   (selected glow + empty-selected ring), which stay subtle.
+   ========================================================= */
+
+@keyframes fadeSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSlideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeSlideRight {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes selectPop {
+  0% {
+    transform: scale(0.82);
+  }
+  60% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes selectedGlowPulse {
+  0%,
+  100% {
+    box-shadow: var(--color-selected-glow);
+  }
+  50% {
+    box-shadow:
+      0 0 10px rgba(118, 104, 255, 1), 0 0 28px rgba(118, 104, 255, 0.62),
+      0 0 52px rgba(118, 104, 255, 0.26);
+  }
+}
+
+@keyframes ringPulse {
+  0%,
+  100% {
+    box-shadow: var(--glow-white);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(225, 230, 255, 0.85);
+  }
+}
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  appearance: none;
+  border: 0;
+  text-decoration: none;
+  list-style: none;
+  box-sizing: border-box;
+  scrollbar-width: none;
+}
+
+body {
+  background: var(--color-bg);
+  height: 100vh;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+  color: var(--color-text);
+}
+
+main {
+  background: var(--color-bg-gradient);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 15px;
+  min-height: calc(100vh - 64px);
+}
+
+img {
+  width: clamp(160px, 50vw, 360px);
+  max-width: 90vw;
+  object-fit: cover;
+}
+
+small {
+  display: block;
+  margin-top: 3px;
+}
+
+/* =========================================================
+   NAV BAR
+   ========================================================= */
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  width: 100%;
+  color: var(--color-text);
+  font-size: 1rem;
+  background: var(--color-bg-deep);
+  border-bottom: 1px solid var(--color-border-subtle);
+  padding: 0 24px;
+  animation: fadeSlideDown var(--transition-slow) var(--ease-smooth) both;
+}
+
+.game-status {
+  flex: 1;
+}
+
+.game-status p {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.nav-logo {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-logo img {
+  width: clamp(120px, 18vw, 200px);
+  height: auto;
+}
+
+.profile-img {
+  width: 32px;
+  height: 32px;
+  background: var(--color-bg-deep);
+  border-radius: 50%;
+  border: 1px solid var(--badge-border);
+  box-shadow: var(--glow-primary);
+  flex-shrink: 0;
+  transition:
+    transform var(--transition-normal) var(--ease-smooth),
+    box-shadow var(--transition-normal) var(--ease-smooth);
+}
+
+.turn-status {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.turn-indicator {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-primary-bright);
+  padding: 6px 16px;
+  background: var(--color-primary-alpha);
+  border: 1px solid rgba(118, 104, 255, 0.3);
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  transition:
+    background var(--transition-normal) var(--ease-smooth),
+    color var(--transition-normal) var(--ease-smooth);
+}
+
+/* =========================================================
+   GAME CONTAINER — 3 COLUMN LAYOUT
+   ========================================================= */
+
+.game-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(16px, 3vw, 40px);
+  padding: 20px;
+  padding-bottom: 10px;
+}
+
+/* =========================================================
+   PARTICIPANT INFO CARDS (sidebars)
+   ========================================================= */
+
+.participant-info-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  /* width: clamp(220px, 20vw, 300px); */
+  background: var(--color-surface);
+  padding: 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: var(--shadow-card);
+  transition:
+    border-color var(--transition-normal) var(--ease-smooth),
+    box-shadow var(--transition-normal) var(--ease-smooth);
+  animation: fadeSlideLeft var(--transition-slow) var(--ease-smooth) both;
+  animation-delay: 0.1s;
+}
+
+/* Second info card in the container (the opponent) slides in from the
+   opposite side, so the two panels read as converging on the board. */
+.participant-info-card:nth-of-type(2) {
+  animation-name: fadeSlideRight;
+  animation-delay: 0.25s;
+}
+
+.participant-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 12px;
+}
+
+.participant {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.participant .participant-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.participant small {
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+}
+
+.participant-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--badge-bg);
+  font-size: 0.65rem;
+  color: var(--badge-active-text);
+  transition:
+    background var(--transition-normal) var(--ease-smooth),
+    color var(--transition-normal) var(--ease-smooth);
+}
+
+.participant-data {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 12px;
+}
+
+.participant-data p {
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-bottom: 4px;
+}
+
+.participant-data h3 {
+  font-size: 1.5rem;
+  color: var(--color-text-accent);
+  font-weight: 700;
+  transition: color var(--transition-normal) var(--ease-smooth);
+}
+
+
+#player-img {
+  background: #6D28D9;
+}
+
+#computer-img {
+  background: #B45309;
+}
+
+/* =========================================================
+   PARTICIPANT NUMBERS (inventory in sidebar)
+   ========================================================= */
+
+.participant-numbers {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 12px;
+}
+
+.participant-numbers h2 {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+
+.participant-numbers .grid-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.element-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.element-box small {
+  font-size: 0.65rem;
+  color: var(--color-text-subtle);
+  font-weight: 500;
+}
+
+.participant-state {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+.participant-state h4 {
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+  font-weight: 400;
+}
+
+/* =========================================================
+   GAME BOARD
+   ========================================================= */
+
+.game-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: clamp(280px, 44vw, 580px);
+  /* padding: 32px 16px; */
+  animation: fadeIn var(--transition-slow) var(--ease-smooth) both;
+  animation-delay: 0.2s;
+}
+
+.game-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.grid-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  gap: 10px;
+  animation: fadeIn var(--transition-normal) var(--ease-smooth) both;
+}
+
+/* Board rows materialize in sequence rather than all at once. */
+.game-board .grid-row:nth-child(1) { animation-delay: 0.24s; }
+.game-board .grid-row:nth-child(2) { animation-delay: 0.3s; }
+.game-board .grid-row:nth-child(3) { animation-delay: 0.36s; }
+.game-board .grid-row:nth-child(4) { animation-delay: 0.42s; }
+.game-board .grid-row:nth-child(5) { animation-delay: 0.48s; }
+.game-board .grid-row:nth-child(6) { animation-delay: 0.54s; }
+.game-board .grid-row:nth-child(7) { animation-delay: 0.6s; }
+.game-board .grid-row:nth-child(8) { animation-delay: 0.66s; }
+
+/* =========================================================
+   ROW ELEMENT — base circle token on the board
+   ========================================================= */
+
+.row-element {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-circle);
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition:
+    transform var(--transition-fast) var(--ease-smooth),
+    box-shadow var(--transition-normal) var(--ease-smooth),
+    border-color var(--transition-normal) var(--ease-smooth),
+    background var(--transition-normal) var(--ease-smooth);
+}
+
+.element-number {
+  font-weight: 600;
+  font-size: inherit;
+  color: inherit;
+  pointer-events: none;
+}
+
+/* =========================================================
+   BOARD POSITION STATES
+   These classes are toggled by JavaScript. Do not rename.
+   ========================================================= */
+
+/* EMPTY — unoccupied board position, available for selection */
+.row-element.empty {
+  background: var(--color-empty);
+  border: 1px solid var(--color-empty-border);
+}
+
+.row-element.empty:hover {
+  background: var(--color-empty-hover);
+  border-color: var(--color-primary-light);
+  transform: scale(1.1);
+}
+
+.row-element.empty .element-number {
+  display: none;
+}
+
+/* EMPTY-SELECTED — the currently chosen board position */
+.row-element.empty-selected {
+  background: var(--color-empty-selected);
+  border: 2px solid var(--color-focus-ring);
+  box-shadow: var(--glow-white);
+  animation: ringPulse 1.6s ease-in-out infinite;
+}
+
+.row-element.empty-selected .element-number {
+  display: none;
+}
+
+/* SELECTED-DISABLED — occupied board position (has a placed number) */
+.row-element.selected-disabled {
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border-soft);
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  cursor: default;
+}
+
+.row-element.selected-disabled .element-number {
+  display: block;
+}
+
+.row-element.selected-disabled:hover {
+  transform: none;
+  cursor: default;
+}
+
+.row-element.player-placed {
+  background: #6D28D9;
+  color: #ffffff;
+}
+
+.row-element.computer-placed {
+  background: #B45309;
+  color: #111111;
+}
+
+.row-element.computer-placed:hover {
+  background: #B45309;
+  color: #111111;
+  border: none;
+}
+
+.row-element.player-placed:hover {
+  background: #6D28D9;
+  color: #ffffff;
+  border: none;
+}
+/* =========================================================
+   NUMBER SELECTOR STATES
+   These classes are used in both the number selector bar
+   and the participant inventory sidebar.
+   ========================================================= */
+
+/* SELECTED-ENABLED — available number that can be chosen */
+.row-element.selected-enabled {
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+/* Hover only in the number selector bar (not sidebar inventory) */
+.number-selector .row-element.selected-enabled:hover {
+  border-color: var(--color-primary-light);
+  background: var(--color-surface-hover);
+  transform: scale(1.08);
+}
+
+/* SELECTED — the currently chosen number */
+.row-element.selected {
+  background: var(--button-primary-bg);
+  box-shadow: var(--color-selected-glow);
+  border: 1px solid var(--color-selected-border);
+  color: var(--button-primary-text);
+  font-weight: 600;
+  animation:
+    selectPop var(--transition-slow) var(--ease-bounce) both,
+    selectedGlowPulse 2.4s ease-in-out 0.3s infinite;
+}
+
+.row-element.selected:hover {
+  transform: scale(1.05);
+}
+
+.row-element.selected .element-number {
+  display: block;
+}
+
+.row-element.blackhole {
+  background: var(--black-hole-gradient);
+  border: 2px solid var(--black-hole-ring);
+  color: var(--black-hole-ring-bright);
+  box-shadow: var(--black-hole-glow);
+  cursor: default;
+  transform: none;
+}
+
+.row-element.blackhole:hover {
+  background: var(--black-hole-gradient);
+  border-color: var(--black-hole-ring-bright);
+  box-shadow: var(--black-hole-glow);
+  transform: none;
+  cursor: default;
+}
+
+
+
+/* 
+==================================================
+       Blackhole
+==================================================== */
+
+.row-element.blackhole-consumed {
+  --pull-x: 0px;
+  --pull-y: 0px;
+
+  animation: blackhole-consume 1.2s cubic-bezier(0.4, 0, 1, 1) forwards;
+  pointer-events: none;
+  z-index: 5;
+}
+
+@keyframes blackhole-consume {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+
+  45% {
+    opacity: 1;
+    transform: translate(
+      calc(var(--pull-x) * 0.25),
+      calc(var(--pull-y) * 0.25)
+    ) scale(0.8);
+  }
+
+  75% {
+    opacity: 0.7;
+    transform: translate(
+      calc(var(--pull-x) * 0.7),
+      calc(var(--pull-y) * 0.7)
+    ) scale(0.4);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(var(--pull-x), var(--pull-y)) scale(0);
+  }
+}
+
+/* =========================================================
+   NUMBER SELECTOR DISABLED
+   When a number has 0 remaining, it becomes selected-disabled
+   in the number selector. This reuses the same class as
+   occupied board positions, which is intentional.
+   ========================================================= */
+
+.number-selector .row-element.selected-disabled {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  color: var(--color-text-disabled);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   NUMBER SELECTOR BAR (bottom)
+   ========================================================= */
+
+.number-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: fit-content;
+  max-width: 92vw;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  padding: 9px 20px;
+  animation: fadeSlideUp var(--transition-slow) var(--ease-smooth) both;
+  animation-delay: 0.4s;
+}
+
+.number-selector .instructions {
+  max-width: 100px;
+}
+
+.number-selector small {
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+  line-height: 1.4;
+}
+
+.number-selector .grid-row {
+  gap: 8px;
+}
+
+.number-selector .row-element {
+  width: 42px;
+  height: 42px;
+}
+
+/* =========================================================
+   SUBMIT BUTTON
+   ========================================================= */
+
+.number-selector button {
+  background: var(--button-primary-bg);
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--color-text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition:
+    transform var(--transition-fast) var(--ease-smooth),
+    box-shadow var(--transition-fast) var(--ease-smooth),
+    background var(--transition-normal) var(--ease-smooth),
+    opacity var(--transition-normal) var(--ease-smooth);
+}
+
+.number-selector button:hover {
+  background: var(--button-primary-bg-hover);
+  box-shadow: var(--button-primary-shadow);
+  transform: translateY(-2px);
+}
+
+.number-selector button:active {
+  transform: scale(0.96) translateY(0);
+}
+
+
+/* ======================================================
+     Game Over 
+======================================================= */
+#game-over-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85); /* Dimmed backdrop */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+/* Helper class to toggle the modal hide state */
+.overlay-hidden {
+  display: none !important;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal-content {
+  background-color: #222;
+  color: white;
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: 2px solid #444;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* gap: 10px; */
+}
+
+.modal-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.score-display p {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+#restart-btn {
+  margin-top: 20px;
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+#reset-btn {
+  background: none;
+  color: white;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   RESPONSIVE LAYOUT
+   Same structure and reading order at every size — cards flank
+   the board on wide screens, then stack on narrow ones. Nothing
+   about the visual direction (colors, card shape, board style)
+   changes between breakpoints, only spacing and flow.
+   ========================================================= */
+
+@media (max-width: 1024px) {
+  .game-container {
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .participant-info-card {
+    width: clamp(200px, 28vw, 280px);
+    padding: 14px;
+  }
+
+  .row-element {
+    width: 40px;
+    height: 40px;
+    font-size: 0.9rem;
+  }
+
+  .number-selector .row-element {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+@media (max-width: 860px) {
+  nav {
+    flex-wrap: wrap;
+    height: auto;
+    row-gap: 8px;
+    padding: 12px 16px;
+  }
+
+  .nav-logo {
+    order: -1;
+    flex-basis: 100%;
+    justify-content: center;
+  }
+
+  .game-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+  }
+
+  .participant-info-card {
+    width: min(94vw, 460px);
+  }
+
+  .participant-numbers {
+    min-height: auto;
+  }
+
+  .game-board {
+    width: min(96vw, 460px);
+    padding: 20px 8px;
+  }
+
+  .number-selector {
+    width: min(94vw, 460px);
+    gap: 10px;
+    padding: 12px 14px;
+  }
+}
+
+@media (max-width: 520px) {
+  .nav-logo img {
+    width: clamp(100px, 40vw, 160px);
+  }
+
+  .row-element {
+    width: 34px;
+    height: 34px;
+    font-size: 0.8rem;
+  }
+
+  .number-selector .row-element {
+    width: 32px;
+    height: 32px;
+  }
+
+  .grid-row {
+    gap: 6px;
+  }
+
+  .game-grid {
+    gap: 4px;
+  }
+
+  .participant .participant-name {
+    font-size: 1rem;
+  }
+
+  .participant-data h3 {
+    font-size: 1.3rem;
+  }
+
+  .participant-numbers h2 {
+    font-size: 0.75rem;
+  }
+
+  .number-selector {
+    gap: 6px;
+    padding: 10px;
+  }
+
+  .number-selector button {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .row-element {
+    width: 28px;
+    height: 28px;
+    font-size: 0.7rem;
+  }
+
+  .number-selector .row-element {
+    width: 26px;
+    height: 26px;
+  }
+
+  .grid-row {
+    gap: 4px;
+  }
+
+  .game-grid {
+    gap: 3px;
+  }
+
+  .participant-info-card {
+    padding: 10px;
+  }
+}
+
+/* =========================================================
+   ACCESSIBILITY — REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
