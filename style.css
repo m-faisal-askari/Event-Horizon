@@ -1,4 +1,7 @@
 :root {
+  --app-height: 100dvh;
+  --app-width: 100dvw;
+
   /* =========================================================
      CORE BACKGROUNDS
      ========================================================= */
@@ -439,7 +442,8 @@
 
 body {
   background: var(--color-bg);
-  height: 100vh;
+  min-height: 100vh;
+  min-height: var(--app-height, 100dvh);
   font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
   color: var(--color-text);
@@ -452,6 +456,7 @@ main {
   align-items: center;
   padding-bottom: 15px;
   min-height: calc(100vh - 64px);
+  min-height: calc(var(--app-height, 100dvh) - 64px);
 }
 
 img {
@@ -1080,8 +1085,11 @@ nav {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  height: var(--app-height, 100dvh);
   background-color: rgba(0, 0, 0, 0.85); /* Dimmed backdrop */
   display: flex;
   justify-content: center;
@@ -1189,17 +1197,55 @@ nav {
 .rotate-content p {
   font-size: 0.9rem;
   color: var(--color-text-secondary);
-  margin-bottom: 18px;
+  margin-bottom: 14px;
   line-height: 1.4;
+}
+
+.enter-landscape-btn {
+  background: var(--button-primary-bg);
+  color: var(--button-primary-text);
+  border: 1px solid var(--button-primary-border);
+  box-shadow: var(--button-primary-shadow);
+  padding: 10px 24px;
+  border-radius: var(--radius-sm);
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition:
+    transform var(--transition-fast) var(--ease-smooth),
+    background var(--transition-normal) var(--ease-smooth);
+}
+
+.enter-landscape-btn:hover {
+  background: var(--button-primary-bg-hover);
+  transform: translateY(-1px);
+}
+
+.enter-landscape-btn:active {
+  transform: scale(0.97);
+}
+
+.rotate-hint {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  line-height: 1.35;
+  margin-bottom: 14px;
+  max-width: 300px;
+  transition: color var(--transition-normal) var(--ease-smooth);
+}
+
+.rotate-hint.visible {
+  color: var(--color-warning);
 }
 
 .dismiss-rotate-btn {
   background: var(--color-surface-raised);
   color: var(--color-text-secondary);
   border: 1px solid var(--color-border);
-  padding: 8px 18px;
+  padding: 7px 16px;
   border-radius: var(--radius-sm);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   cursor: pointer;
   transition: background var(--transition-fast) var(--ease-smooth);
 }
@@ -1339,198 +1385,245 @@ nav {
 }
 
 /* Mobile landscape viewports (e.g. phones held horizontally) */
-@media (orientation: landscape) and (max-height: 560px) {
+@media (orientation: landscape) and (max-height: 600px) {
+  html,
   body {
-    min-height: 100dvh;
-    overflow-y: auto;
+    height: 100%;
+    height: var(--app-height, 100dvh);
+    max-height: var(--app-height, 100dvh);
+    width: 100%;
+    width: var(--app-width, 100dvw);
+    overflow: hidden;
+    overscroll-behavior: none;
+    position: fixed;
+    top: 0;
+    left: 0;
   }
 
   nav {
-    height: 44px;
+    height: clamp(32px, 7.5vh, 40px);
     padding: 0 max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left));
+    flex-shrink: 0;
   }
 
   .nav-logo img {
-    width: 110px;
+    height: clamp(16px, 4.2vh, 22px);
+    width: auto;
   }
 
   #resume-btn {
-    padding: 4px 12px;
-    font-size: 0.75rem;
+    padding: 2px 8px;
+    font-size: 0.72rem;
+    height: clamp(22px, 5.2vh, 26px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #resume-btn .material-symbols-outlined {
+    font-size: 16px;
   }
 
   .game-status p {
-    font-size: 0.65rem;
+    font-size: 0.62rem;
   }
 
   .turn-indicator {
-    padding: 4px 10px;
-    font-size: 0.75rem;
+    padding: 2px 8px;
+    font-size: 0.72rem;
+    height: clamp(22px, 5.2vh, 26px);
+    display: flex;
+    align-items: center;
   }
 
   .profile-img {
-    width: 24px;
-    height: 24px;
+    width: clamp(18px, 4.4vh, 22px);
+    height: clamp(18px, 4.4vh, 22px);
   }
 
   main {
-    min-height: calc(100dvh - 44px);
-    padding: 4px max(12px, env(safe-area-inset-right)) max(6px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
-    justify-content: space-evenly;
-    gap: 4px;
-  }
-
-  .game-container {
-    flex-direction: row;
+    height: calc(var(--app-height, 100dvh) - clamp(32px, 7.5vh, 40px));
+    max-height: calc(var(--app-height, 100dvh) - clamp(32px, 7.5vh, 40px));
+    min-height: 0;
+    padding: 2px max(12px, env(safe-area-inset-right)) max(4px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    gap: clamp(6px, 1.8vw, 16px);
-    padding: 2px 4px;
-    width: 100%;
-  }
-
-  .participant-info-card {
-    width: clamp(135px, 20vw, 195px);
-    padding: 6px 8px;
-    gap: 4px;
-  }
-
-  .participant-info {
-    padding-bottom: 6px;
-  }
-
-  .participant .participant-name {
-    font-size: 0.8rem;
-  }
-
-  .participant small {
-    font-size: 0.55rem;
-  }
-
-  .participant-status {
-    padding: 2px 6px;
-    font-size: 0.55rem;
-  }
-
-  .participant-data {
-    padding-bottom: 4px;
-  }
-
-  .participant-data p {
-    font-size: 0.55rem;
-  }
-
-  .participant-data h3 {
-    font-size: 1rem;
-  }
-
-  .participant-numbers {
-    padding-bottom: 4px;
-  }
-
-  .participant-numbers h2 {
-    font-size: 0.6rem;
-    margin-bottom: 3px;
-  }
-
-  .participant-numbers .grid-row {
-    gap: 3px;
-  }
-
-  .participant-numbers .row-element {
-    width: clamp(18px, 4.4vh, 24px);
-    height: clamp(18px, 4.4vh, 24px);
-    font-size: 0.7rem;
-  }
-
-  .element-box {
+    overflow: hidden;
+    box-sizing: border-box;
     gap: 2px;
   }
 
-  .element-box small {
+  .game-container {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(6px, 1.6vw, 16px);
+    padding: 2px 4px;
+    width: 100%;
+    max-height: calc(100% - 40px);
+  }
+
+  .participant-info-card {
+    width: clamp(120px, 18vw, 165px);
+    padding: 4px 6px;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+
+  .participant-info {
+    padding-bottom: 2px;
+  }
+
+  .participant .participant-name {
+    font-size: 0.75rem;
+  }
+
+  .participant small {
+    font-size: 0.5rem;
+    margin-top: 1px;
+  }
+
+  .participant-status {
+    padding: 1px 5px;
+    font-size: 0.5rem;
+  }
+
+  .participant-data {
+    padding-bottom: 2px;
+  }
+
+  .participant-data p {
+    font-size: 0.5rem;
+    padding-bottom: 1px;
+  }
+
+  .participant-data h3 {
+    font-size: 0.92rem;
+  }
+
+  .participant-numbers {
+    padding-bottom: 2px;
+  }
+
+  .participant-numbers h2 {
     font-size: 0.55rem;
+    margin-bottom: 2px;
+  }
+
+  .participant-numbers .grid-row {
+    gap: 2px;
+  }
+
+  .participant-numbers .row-element {
+    width: clamp(16px, 3.6vh, 20px);
+    height: clamp(16px, 3.6vh, 20px);
+    font-size: 0.65rem;
+  }
+
+  .element-box {
+    gap: 1px;
+  }
+
+  .element-box small {
+    font-size: 0.5rem;
+    margin-top: 1px;
   }
 
   .participant-state {
-    padding-top: 2px;
-    gap: 4px;
+    padding-top: 1px;
+    gap: 3px;
   }
 
   .participant-state h4 {
-    font-size: 0.6rem;
+    font-size: 0.55rem;
   }
 
   .game-board {
     width: auto;
     padding: 0;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   .game-grid {
-    gap: clamp(2px, 0.5vh, 4px);
+    gap: clamp(1px, 0.4vh, 3px);
   }
 
   .grid-row {
-    gap: clamp(2px, 0.7vh, 5px);
+    gap: clamp(2px, 0.6vh, 4px);
   }
 
   .game-board .row-element {
-    width: clamp(22px, 5.2vh, 32px);
-    height: clamp(22px, 5.2vh, 32px);
-    font-size: clamp(0.7rem, 2vh, 0.85rem);
+    width: clamp(19px, 4.3vh, 26px);
+    height: clamp(19px, 4.3vh, 26px);
+    font-size: clamp(0.68rem, 1.8vh, 0.8rem);
   }
 
   .number-selector {
-    padding: 4px 10px;
-    gap: clamp(6px, 1.2vw, 12px);
+    flex: 0 0 auto;
+    padding: 2px 10px;
+    gap: clamp(4px, 1.2vw, 10px);
     max-width: 96vw;
+    border-radius: var(--radius-sm);
+    margin-bottom: 2px;
   }
 
   .number-selector .instructions {
-    max-width: 80px;
+    max-width: 75px;
   }
 
   .number-selector small {
-    font-size: 0.55rem;
-    line-height: 1.2;
+    font-size: 0.52rem;
+    line-height: 1.1;
+    margin-top: 0;
   }
 
   .number-selector .grid-row {
-    gap: clamp(3px, 0.7vh, 5px);
+    gap: clamp(2px, 0.6vh, 4px);
   }
 
   .number-selector .row-element {
-    width: clamp(22px, 5vh, 30px);
-    height: clamp(22px, 5vh, 30px);
-    font-size: clamp(0.7rem, 2vh, 0.85rem);
+    width: clamp(20px, 4.5vh, 26px);
+    height: clamp(20px, 4.5vh, 26px);
+    font-size: clamp(0.68rem, 1.8vh, 0.8rem);
   }
 
   .number-selector button {
-    padding: 6px 12px;
-    font-size: 0.75rem;
+    padding: 4px 12px;
+    font-size: 0.72rem;
+    height: clamp(25px, 5.2vh, 30px);
   }
 
   .modal-content {
-    padding: 16px 24px;
-    max-height: 90dvh;
+    padding: 14px 20px;
+    max-height: 92dvh;
     overflow-y: auto;
   }
 
   .modal-content h1 {
-    font-size: 1.5rem;
-    margin-bottom: 8px;
+    font-size: 1.4rem;
+    margin-bottom: 6px;
   }
 
   .score-display p {
-    font-size: 0.95rem;
-    margin: 4px 0;
+    font-size: 0.88rem;
+    margin: 3px 0;
   }
 
   #restart-btn,
   #pause-resume-btn {
-    margin-top: 10px;
-    margin-bottom: 6px;
-    padding: 8px 20px;
-    font-size: 0.9rem;
+    margin-top: 8px;
+    margin-bottom: 4px;
+    padding: 6px 18px;
+    font-size: 0.85rem;
   }
 }
 

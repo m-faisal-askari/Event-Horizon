@@ -27,6 +27,8 @@ const pausePlayerScore = document.getElementById("pause-player-score");
 const pauseComputerScore = document.getElementById("pause-computer-score");
 const rotatePrompt = document.getElementById("rotate-device-prompt");
 const dismissRotateBtn = document.getElementById("dismiss-rotate-btn");
+const enterLandscapeBtn = document.getElementById("enter-landscape-btn");
+const rotateHint = document.getElementById("rotate-hint");
 
 const playerScoreEl = document.getElementById("player-score");
 const computerScoreEl = document.getElementById("computer-score");
@@ -323,6 +325,36 @@ window.addEventListener("keydown", (e) => {
 if (dismissRotateBtn && rotatePrompt) {
   dismissRotateBtn.addEventListener("click", () => {
     rotatePrompt.classList.add("dismissed");
+  });
+}
+
+// Rotate Device Prompt - Enter Landscape button
+if (enterLandscapeBtn) {
+  enterLandscapeBtn.addEventListener("click", async () => {
+    try {
+      if (document.documentElement.requestFullscreen) {
+        await document.documentElement.requestFullscreen().catch(() => {});
+      } else if (document.documentElement.webkitRequestFullscreen) {
+        await document.documentElement.webkitRequestFullscreen().catch(() => {});
+      }
+
+      if (screen.orientation && typeof screen.orientation.lock === "function") {
+        await screen.orientation.lock("landscape");
+      } else {
+        if (rotateHint) {
+          rotateHint.innerHTML =
+            "Automatic rotation is not supported by your browser. Please turn on <strong>Auto-Rotate</strong> and rotate your device.";
+          rotateHint.classList.add("visible");
+        }
+      }
+    } catch (err) {
+      console.log("Orientation lock unavailable or OS lock enabled:", err);
+      if (rotateHint) {
+        rotateHint.innerHTML =
+          "Auto-Rotate is locked on your device. Please turn on <strong>Auto-Rotate</strong> in your device settings and rotate your phone.";
+        rotateHint.classList.add("visible");
+      }
+    }
   });
 }
 
@@ -841,3 +873,45 @@ window.resetGame = resetGame;
 
 // Start game
 initGame();
+
+// ===========================================================================
+//                      Mobile Viewport & Orientation Tracking
+// ===========================================================================
+
+function updateViewportDimensions() {
+  const vv = window.visualViewport;
+  const width = vv ? vv.width : window.innerWidth;
+  const height = vv ? vv.height : window.innerHeight;
+
+  document.documentElement.style.setProperty("--app-height", `${height}px`);
+  document.documentElement.style.setProperty("--app-width", `${width}px`);
+
+  const isLandscape = width > height;
+
+  if (isLandscape) {
+    if (window.scrollX !== 0 || window.scrollY !== 0) {
+      window.scrollTo(0, 0);
+    }
+    // Re-enable portrait rotate prompt if returned to landscape
+    if (rotatePrompt && rotatePrompt.classList.contains("dismissed")) {
+      rotatePrompt.classList.remove("dismissed");
+    }
+  }
+}
+
+window.addEventListener("resize", updateViewportDimensions);
+window.addEventListener("orientationchange", () => {
+  setTimeout(updateViewportDimensions, 50);
+  setTimeout(updateViewportDimensions, 200);
+});
+
+if (window.visualViewport) {
+  window.visualViewport.addEventListener("resize", updateViewportDimensions);
+  window.visualViewport.addEventListener("scroll", updateViewportDimensions);
+}
+
+document.addEventListener("fullscreenchange", updateViewportDimensions);
+document.addEventListener("webkitfullscreenchange", updateViewportDimensions);
+
+// Initial viewport dimensions calculation
+updateViewportDimensions();
