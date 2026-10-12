@@ -30,6 +30,11 @@ const dismissRotateBtn = document.getElementById("dismiss-rotate-btn");
 const enterLandscapeBtn = document.getElementById("enter-landscape-btn");
 const rotateHint = document.getElementById("rotate-hint");
 
+const howToPlayBtn = document.getElementById("how-to-play-btn");
+const howToPlayOverlay = document.getElementById("how-to-play-overlay");
+const closeGuideBtn = document.getElementById("close-guide-btn");
+const closeGuideX = document.getElementById("close-guide-x");
+
 const playerScoreEl = document.getElementById("player-score");
 const computerScoreEl = document.getElementById("computer-score");
 
@@ -308,8 +313,14 @@ if (pauseResumeBtn) {
   });
 }
 
-// Keyboard shortcut (Escape or P) for accessible pause toggle
+// Keyboard shortcut (Escape or P) for accessible pause toggle & guide closing
 window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    if (howToPlayOverlay && !howToPlayOverlay.classList.contains("overlay-hidden")) {
+      closeHowToPlay();
+      return;
+    }
+  }
   if (e.key === "Escape" || e.key === "p" || e.key === "P") {
     if (!gameState.isGameOver) {
       if (gameState.isPaused) {
@@ -320,6 +331,59 @@ window.addEventListener("keydown", (e) => {
     }
   }
 });
+
+// ===========================================================================
+//                      How to Play Guide Management
+// ===========================================================================
+
+let wasPausedBeforeGuide = false;
+
+function openHowToPlay() {
+  wasPausedBeforeGuide = gameState.isPaused;
+  if (!gameState.isPaused && !gameState.isGameOver) {
+    gameState.isPaused = true;
+    document.body.classList.add("game-paused");
+    if (activePausableTimer) {
+      activePausableTimer.pause();
+    }
+  }
+  if (howToPlayOverlay) {
+    howToPlayOverlay.classList.remove("overlay-hidden");
+  }
+}
+
+function closeHowToPlay() {
+  if (howToPlayOverlay) {
+    howToPlayOverlay.classList.add("overlay-hidden");
+  }
+  if (!wasPausedBeforeGuide && !gameState.isGameOver) {
+    gameState.isPaused = false;
+    document.body.classList.remove("game-paused");
+    if (activePausableTimer) {
+      activePausableTimer.resume();
+    }
+  }
+}
+
+if (howToPlayBtn) {
+  howToPlayBtn.addEventListener("click", openHowToPlay);
+}
+
+if (closeGuideBtn) {
+  closeGuideBtn.addEventListener("click", closeHowToPlay);
+}
+
+if (closeGuideX) {
+  closeGuideX.addEventListener("click", closeHowToPlay);
+}
+
+if (howToPlayOverlay) {
+  howToPlayOverlay.addEventListener("click", (e) => {
+    if (e.target === howToPlayOverlay) {
+      closeHowToPlay();
+    }
+  });
+}
 
 // Rotate Device Prompt dismissal button
 if (dismissRotateBtn && rotatePrompt) {
@@ -915,3 +979,40 @@ document.addEventListener("webkitfullscreenchange", updateViewportDimensions);
 
 // Initial viewport dimensions calculation
 updateViewportDimensions();
+
+// ===========================================================================
+//                      Game Simulation Helper
+// ===========================================================================
+
+async function simulateGame() {
+  while (getLegalMoves().length > 1) {
+    if (gameState.currentTurn === "player") {
+      const legalMoves = getLegalMoves();
+      const availableNumbers = getAvailableNumbers();
+
+      const randomPosition =
+        legalMoves[Math.floor(Math.random() * legalMoves.length)];
+
+      const keys = Object.keys(gameState.playerNumbers).filter(
+        (key) => gameState.playerNumbers[key] > 0,
+      );
+
+      const randomNumber = keys[Math.floor(Math.random() * keys.length)];
+
+      makeAnyMove("player", randomPosition, randomNumber);
+      // await delay(0.2)
+    } else {
+      makeComputerMove();
+      // await delay(0.2)
+    }
+
+    turnTransition();
+  }
+
+  const blackHole = checkBlackhole();
+  if (blackHole) {
+    handleBlackhole(blackHole);
+  } else {
+    handleBlackhole();
+  }
+}

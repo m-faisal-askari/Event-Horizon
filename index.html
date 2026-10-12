@@ -26,6 +26,15 @@
           <span class="material-symbols-outlined"> pause </span>
         </button>
         <p id="game-status-text">Game in Progress</p>
+        <button
+          id="how-to-play-btn"
+          type="button"
+          class="how-to-play-link"
+          aria-label="How to play guide"
+        >
+          <span class="guide-icon" aria-hidden="true">?</span>
+          <span>How to Play</span>
+        </button>
       </div>
 
       <div class="nav-logo">
@@ -157,6 +166,92 @@
         >
           Reset Score
         </button>
+      </div>
+    </div>
+
+    <!-- How to Play Guide Overlay -->
+    <div
+      id="how-to-play-overlay"
+      class="overlay-hidden"
+      aria-modal="true"
+      role="dialog"
+      aria-labelledby="guide-heading"
+    >
+      <div class="modal-content guide-modal-content">
+        <div class="guide-header">
+          <div class="guide-title-wrap">
+            <span class="guide-badge">Guide</span>
+            <h2 id="guide-heading">How to Play Event Horizon</h2>
+          </div>
+          <button
+            id="close-guide-x"
+            type="button"
+            class="guide-close-x"
+            aria-label="Close guide"
+          >
+            &times;
+          </button>
+        </div>
+
+        <div class="guide-body">
+          <section class="guide-section">
+            <h3>🎯 The Objective</h3>
+            <p>
+              Event Horizon is a cosmic tactical numbers game played on a 36-space pyramid.
+              Outscore <strong>Orbit (the Computer)</strong> by strategically positioning your
+              high numbers so they are drawn into the Black Hole when the final space collapses!
+            </p>
+          </section>
+
+          <section class="guide-section">
+            <h3>🚀 How Turns Work</h3>
+            <ul class="guide-list">
+              <li>
+                <strong>1. Select an Empty Space:</strong> Click any available circle on the pyramid board.
+              </li>
+              <li>
+                <strong>2. Pick Your Number:</strong> Choose a number (<strong>1 to 9</strong>) from your tray at the bottom. You each start with a quota of 2 tokens per number.
+              </li>
+              <li>
+                <strong>3. Place the Number:</strong> Click <strong>"Place Number"</strong> to lock in your move.
+              </li>
+              <li>
+                <strong>4. Orbit's Move:</strong> Orbit will analyze the board and place its number.
+              </li>
+            </ul>
+          </section>
+
+          <section class="guide-section">
+            <h3>🌌 The Black Hole &amp; Scoring</h3>
+            <ul class="guide-list">
+              <li>
+                <strong>The Collapse:</strong> When only <strong>1 last empty space</strong> remains on the board, that space becomes the <strong>Black Hole (Event Horizon)</strong>!
+              </li>
+              <li>
+                <strong>Gravitational Pull:</strong> The Black Hole consumes all adjacent neighboring spaces (same row, row above, and row below — up to 6 surrounding tokens).
+              </li>
+              <li>
+                <strong>Scoring:</strong> <em>Only tokens consumed by the Black Hole count toward scoring!</em> Your final score is the sum of all your consumed token values.
+              </li>
+              <li>
+                <strong>Winning:</strong> The player with the highest total score from consumed tokens wins the game!
+              </li>
+            </ul>
+          </section>
+
+          <section class="guide-section guide-tip">
+            <h3>💡 Tactical Pro Tip</h3>
+            <p>
+              Pay close attention to where open spaces are grouping together. Cluster your highest-value numbers (7, 8, 9) around predicted collapse zones, and force Orbit to waste its numbers on outer fringes!
+            </p>
+          </section>
+        </div>
+
+        <div class="guide-actions">
+          <button id="close-guide-btn" type="button" class="guide-close-btn">
+            Got It, Let's Play
+          </button>
+        </div>
       </div>
     </div>
 
