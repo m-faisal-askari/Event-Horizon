@@ -105,3 +105,8 @@ No license has been specified yet. All rights remain with the respective copyrig
 ---
 
 **Built as a frontend development project.**
+
+
+## Screenshot:
+
+<img width="1365" height="629" alt="Screenshot Event Horizon" src="https://github.com/user-attachments/assets/cb90a15d-dbc6-402d-bbf3-7d1c20bf9434" />
